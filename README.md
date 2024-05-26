@@ -39,6 +39,3 @@ If you want to search more than the limited 120 results, detail you search more 
 `Unites States Texas dentist`
 
 And so on... 
-
-THIS IS A TEST FOR A PULL REQUEST AND MERGING
-

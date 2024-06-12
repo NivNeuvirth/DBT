@@ -1,4 +1,11 @@
 .navbar-logo {
     width: auto;
-    height: 40px;
+    height: 60px;
+}
+
+.error {
+    color: red;
+    font-size: 0.875rem;
+    margin-top: 5px;
+    margin-bottom: 0;
 }

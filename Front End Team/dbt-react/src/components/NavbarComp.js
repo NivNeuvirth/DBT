@@ -42,7 +42,7 @@ const NavbarComp = () => {
         <Toolbar disableGutters>
           <Link to={"/home"}>
             <img
-              src={require("../images/LogoDBT.png")}
+              src={require("../images/Logo-NoBG.png")}
               alt=""
               className="navbar-logo"
             />

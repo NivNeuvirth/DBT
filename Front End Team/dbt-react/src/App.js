@@ -7,6 +7,7 @@ import Tickets from "./components/Tickets";
 import Discover from "./components/Discover";
 import backgroundImage from "./images/Cover.jpg";
 import SignUp from "./components/SignUp";
+import ChatBot from "./components/ChatBot";
 
 const appStyle = {
   backgroundImage: `url(${backgroundImage})`,
@@ -22,6 +23,7 @@ function App() {
     <Router>
       <div style={appStyle}>
         <NavbarComp />
+        <ChatBot />
         <div>
           <Routes>
             <Route path="/Trips" element={<YourTrips />} />

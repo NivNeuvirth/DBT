@@ -52,7 +52,7 @@ const ChatBot = () => {
             height: isFullScreen ? "80%" : "70%",
             maxHeight: isFullScreen ? "100%" : "500px",
             border: "1px solid #ccc",
-            borderRadius: isFullScreen ? "0" : "8px",
+            borderRadius: isFullScreen ? "8px" : "8px",
             backgroundColor: "#fff",
             zIndex: 999,
             boxShadow: isFullScreen ? "none" : "0 0 10px rgba(0, 0, 0, 0.1)",

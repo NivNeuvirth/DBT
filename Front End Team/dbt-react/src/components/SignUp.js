@@ -6,6 +6,7 @@ import {
   Typography,
   Button,
   Checkbox,
+  Alert,
 } from "@mui/material";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import Radio from "@mui/material/Radio";
@@ -15,6 +16,7 @@ import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import { useState } from "react";
 import { userSchema } from "./userSchema";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -22,6 +24,7 @@ const SignUp = () => {
     email: "",
     gender: "",
     phoneNumber: "",
+    dateOfBirth: "",
     password: "",
     confirmPassword: "",
     accept: false,
@@ -38,14 +41,33 @@ const SignUp = () => {
   }
 
   const [errors, setErrors] = useState({});
+  const [errorMessage, setErrorMessage] = useState(""); // For displaying error message
+  const navigate = useNavigate();
 
   async function handleSubmit(event) {
     event.preventDefault();
+    setErrorMessage(""); // Clear any existing error message
 
     try {
       await userSchema.validate(formData, { abortEarly: false });
       console.log("Form Submitted", formData);
       // API call to database
+      const response = await fetch("http://localhost:3005/api/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("User registered successfully", data);
+        navigate("/Success");
+      } else {
+        const errorData = await response.json();
+        setErrorMessage(errorData.error); // Set error message from server
+      }
     } catch (error) {
       const newErrors = {};
 
@@ -150,6 +172,20 @@ const SignUp = () => {
           <TextField
             fullWidth
             required
+            type="date"
+            label="Date of Birth"
+            InputLabelProps={{ shrink: true }}
+            style={{ margin: "10px 0 0 0" }}
+            name="dateOfBirth"
+            value={formData.dateOfBirth}
+            onChange={handleChange}
+          />
+          {errors.dateOfBirth && (
+            <div className="error">{errors.dateOfBirth}</div>
+          )}
+          <TextField
+            fullWidth
+            required
             label="Password"
             placeholder="Create Password"
             style={{ margin: "10px 0" }}
@@ -184,6 +220,13 @@ const SignUp = () => {
             label="I accept the terms and conditions"
           />
           {errors.accept && <div className="error">{errors.accept}</div>}
+
+          {errorMessage && (
+            <Alert severity="error" style={{ margin: "10px 0" }}>
+              {errorMessage}
+            </Alert>
+          )}
+
           <Button
             type="submit"
             fullWidth

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -13,13 +13,20 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import ShoppingCartCheckoutOutlinedIcon from "@mui/icons-material/ShoppingCartCheckoutOutlined";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import { UserContext } from "../context/UserContext";
+import useAuth from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 const pages = ["Discover", "Trips", "Tickets"];
-const settings = ["Login"];
+const loggedInSettings = ["Profile", "Settings", "Logout"];
+const loggedOutSettings = ["Login", "Sign Up"];
 
 const NavbarComp = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const { user } = useContext(UserContext); // Use the context
+  const { logout } = useAuth(); // Use the custom hook
+  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -34,6 +41,12 @@ const NavbarComp = () => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleLogout = () => {
+    handleCloseUserMenu();
+    logout();
+    navigate("/Login");
   };
 
   return (
@@ -114,7 +127,17 @@ const NavbarComp = () => {
             ))}
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            {user && (
+              <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{ marginRight: 2, color: "#006400" }}
+              >
+                Hi {user.name}!
+              </Typography>
+            )}
             <IconButton>
               <ShoppingCartCheckoutOutlinedIcon
                 fontSize="large"
@@ -122,11 +145,10 @@ const NavbarComp = () => {
               />
             </IconButton>
             <Tooltip title="Open settings">
-              <IconButton>
+              <IconButton onClick={handleOpenUserMenu}>
                 <PersonOutlineIcon
                   fontSize="large"
                   sx={{ color: "#006400", p: 0 }}
-                  onClick={handleOpenUserMenu}
                 />
               </IconButton>
             </Tooltip>
@@ -146,16 +168,43 @@ const NavbarComp = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Link
-                    style={{ textDecoration: "none", color: "#006400" }}
-                    to={`/${setting}`}
-                  >
-                    {setting}
-                  </Link>
-                </MenuItem>
-              ))}
+              {user
+                ? loggedInSettings.map((setting) => (
+                    <MenuItem
+                      key={setting}
+                      onClick={
+                        setting === "Logout"
+                          ? handleLogout
+                          : handleCloseUserMenu
+                      }
+                    >
+                      {setting === "Logout" ? (
+                        <Typography
+                          textAlign="center"
+                          style={{ color: "#006400", cursor: "pointer" }}
+                        >
+                          {setting}
+                        </Typography>
+                      ) : (
+                        <Link
+                          style={{ textDecoration: "none", color: "#006400" }}
+                          to={`/${setting.toLowerCase()}`}
+                        >
+                          {setting}
+                        </Link>
+                      )}
+                    </MenuItem>
+                  ))
+                : loggedOutSettings.map((setting) => (
+                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                      <Link
+                        style={{ textDecoration: "none", color: "#006400" }}
+                        to={`/${setting.toLowerCase()}`}
+                      >
+                        {setting}
+                      </Link>
+                    </MenuItem>
+                  ))}
             </Menu>
           </Box>
         </Toolbar>

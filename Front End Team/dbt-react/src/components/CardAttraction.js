@@ -5,8 +5,10 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import CardActions from "@mui/material/CardActions";
 import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
 
-const CardAttraction = ({ attraction }) => {
+const CardAttraction = ({ attraction, isAdmin, onDelete }) => {
   return (
     <Card
       sx={{
@@ -38,8 +40,13 @@ const CardAttraction = ({ attraction }) => {
           {attraction.description}
         </Typography>
       </CardContent>
-      <CardActions sx={{ justifyContent: "flex-end" }}>
+      <CardActions sx={{ justifyContent: "space-between" }}>
         <Button size="small">Learn More</Button>
+        {isAdmin && (
+          <IconButton onClick={() => onDelete(attraction.id)}>
+            <DeleteIcon />
+          </IconButton>
+        )}
       </CardActions>
     </Card>
   );

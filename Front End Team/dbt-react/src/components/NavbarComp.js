@@ -50,13 +50,20 @@ const NavbarComp = () => {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: "white" }}>
+    <AppBar
+      position="static"
+      sx={{
+        backgroundColor: "white",
+        boxShadow: "none",
+        borderBottom: "1px solid #e0e0e0",
+      }}
+    >
       <Container maxWidth="xl" disableGutters>
         <Toolbar disableGutters>
           <Link to={"/home"}>
             <img
               src={require("../images/Logo-NoBG.png")}
-              alt=""
+              alt="Logo"
               className="navbar-logo"
             />
           </Link>
@@ -115,6 +122,7 @@ const NavbarComp = () => {
                   color: "#006400",
                   display: "block",
                   fontSize: "1.25rem",
+                  textTransform: "none",
                 }}
               >
                 <Link

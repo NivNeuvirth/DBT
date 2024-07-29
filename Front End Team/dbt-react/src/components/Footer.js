@@ -17,15 +17,7 @@ const Footer = () => {
       <Container maxWidth="lg">
         <Box sx={{ display: "flex", justifyContent: "center", marginTop: 2 }}>
           <Link
-            href="https://facebook.com"
-            target="_blank"
-            rel="noopener"
-            sx={{ margin: 1 }}
-          >
-            <FacebookIcon />
-          </Link>
-          <Link
-            href="https://instagram.com"
+            href="https://www.instagram.com/the_trip_insider/?igsh=MXg4ZnltamdhNHB1eg%3D%3D"
             target="_blank"
             rel="noopener"
             sx={{ margin: 1 }}

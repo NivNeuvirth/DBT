@@ -192,6 +192,46 @@ app.delete(
   }
 );
 
+// Endpoint to fetch all users (admin only)
+app.get("/api/users", authenticateToken, isAdmin, async (req, res) => {
+  try {
+    const query = "SELECT id, name, email, role FROM users";
+    const users = (await db.query(query)).rows;
+
+    if (users.length === 0) {
+      res.status(404).json({ error: "No users found" });
+    } else {
+      res.json(users);
+    }
+  } catch (err) {
+    console.error("Error executing query", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// Endpoint to update a user (admin only)
+app.put("/api/users/:id", authenticateToken, isAdmin, async (req, res) => {
+  const { id } = req.params;
+  const { name, email, role } = req.body;
+
+  try {
+    const query =
+      "UPDATE users SET name = $1, email = $2, role = $3 WHERE id = $4 RETURNING *";
+    const values = [name, email, role, id];
+
+    const result = await db.query(query, values);
+
+    if (result.rows.length === 0) {
+      res.status(404).json({ error: "User not found" });
+    } else {
+      res.json(result.rows[0]);
+    }
+  } catch (err) {
+    console.error("Error executing query", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });

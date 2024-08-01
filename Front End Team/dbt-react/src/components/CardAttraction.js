@@ -7,48 +7,87 @@ import CardActions from "@mui/material/CardActions";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useTheme } from "@mui/material/styles";
+import { styled } from "@mui/system";
+
+const StyledCard = styled(Card)(({ theme }) => ({
+  maxWidth: 345,
+  margin: "auto",
+  height: "100%",
+  display: "flex",
+  flexDirection: "column",
+  boxShadow: theme.shadows[3],
+  borderRadius: theme.shape.borderRadius,
+  transition: "transform 0.3s",
+  "&:hover": {
+    transform: "scale(1.05)",
+  },
+}));
 
 const CardAttraction = ({ attraction, isAdmin, onDelete }) => {
+  const theme = useTheme();
+
   return (
-    <Card
-      sx={{
-        maxWidth: 345,
-        margin: "auto",
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
+    <StyledCard theme={theme}>
       <CardMedia
-        component="img"
-        height="140"
-        image={attraction.image}
-        alt={attraction.name}
-      />
-      <CardContent sx={{ flex: "1 1 auto" }}>
-        <Typography gutterBottom variant="h5" component="div">
+        component="div"
+        sx={{
+          height: 200,
+          overflow: "hidden",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <img
+          src={attraction.image}
+          alt={attraction.name}
+          style={{ width: "100%", height: "auto" }}
+        />
+      </CardMedia>
+      <CardContent sx={{ flex: "1 1 auto", padding: 3 }}>
+        <Typography
+          gutterBottom
+          variant="h5"
+          component="div"
+          sx={{ fontWeight: "bold" }}
+        >
           {attraction.name}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ fontStyle: "italic" }}
+        >
           {attraction.location}
         </Typography>
         <Typography
           variant="body2"
           color="text.secondary"
-          sx={{ marginTop: 1 }}
+          sx={{ marginTop: 2, textAlign: "justify" }}
         >
           {attraction.description}
         </Typography>
       </CardContent>
-      <CardActions sx={{ justifyContent: "space-between" }}>
-        <Button size="small">Learn More</Button>
+      <CardActions sx={{ justifyContent: "space-between", padding: 2 }}>
+        <Button
+          size="small"
+          variant="contained"
+          color="primary"
+          sx={{ textTransform: "none" }}
+        >
+          Learn More
+        </Button>
         {isAdmin && (
-          <IconButton onClick={() => onDelete(attraction.id)}>
+          <IconButton
+            onClick={() => onDelete(attraction.id)}
+            sx={{ color: "error.main" }}
+          >
             <DeleteIcon />
           </IconButton>
         )}
       </CardActions>
-    </Card>
+    </StyledCard>
   );
 };
 

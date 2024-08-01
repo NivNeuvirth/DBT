@@ -22,8 +22,12 @@ const Login = () => {
   const navigate = useNavigate();
   const { setUser } = useContext(UserContext);
 
-  const paperStyle = { padding: 20, width: 280, margin: "20px auto" };
-  const avatarStyle = { backgroundColor: "#006400", margin: "10px 0 20px 0" };
+  const paperStyle = {
+    padding: "20px",
+    width: 280,
+    margin: "20px auto",
+  };
+  const avatarStyle = { backgroundColor: "#0e3c34", margin: "10px 0 20px 0" };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -46,7 +50,7 @@ const Login = () => {
         localStorage.setItem("refreshToken", result.refreshToken);
         localStorage.setItem("accessToken", result.accessToken);
         setUser({ name: result.user.name, role: result.user.role }); // Set user in context
-        navigate("/home");
+        navigate("/");
       } else {
         setErrorMessage(result.error); // Set error message from server
       }
@@ -57,7 +61,7 @@ const Login = () => {
   };
 
   return (
-    <Grid>
+    <Grid style={{ padding: "20px", paddingTop: "80px" }}>
       <Paper elevation={10} style={paperStyle}>
         <Grid align="center">
           <Avatar style={avatarStyle}>
@@ -91,25 +95,25 @@ const Login = () => {
           )}
 
           <FormControlLabel
-            control={<Checkbox defaultChecked style={{ color: "#006400" }} />}
+            control={<Checkbox defaultChecked style={{ color: "#0e3c34" }} />}
             label="Remember me"
           />
           <Button
             type="submit"
             fullWidth
             variant="contained"
-            style={{ backgroundColor: "#006400", margin: "8px 0" }}
+            style={{ backgroundColor: "#0e3c34", margin: "8px 0" }}
           >
             Log In
           </Button>
         </form>
         <Typography>
-          <Link href="#" underline="hover">
+          <Link href="#" underline="hover" sx={{ color: "#0e3c34" }}>
             Forgot password?
           </Link>
         </Typography>
         <Button
-          style={{ backgroundColor: "#00008B", margin: "35px auto" }}
+          style={{ backgroundColor: "#f2bb2a", margin: "35px auto" }}
           fullWidth
           variant="contained"
         >

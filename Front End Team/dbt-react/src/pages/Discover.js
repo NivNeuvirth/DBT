@@ -43,7 +43,12 @@ const Discover = () => {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div
+      style={{
+        padding: "20px",
+        paddingTop: "80px",
+      }}
+    >
       <Grid container spacing={4}>
         {attractions.map((attraction, index) => (
           <Grid item xs={12} sm={6} md={4} key={index}>

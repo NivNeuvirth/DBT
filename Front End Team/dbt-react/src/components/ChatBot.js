@@ -31,7 +31,7 @@ const ChatBot = () => {
             right: "20px",
             zIndex: 1000,
             padding: "10px 10px",
-            backgroundColor: "#0078d4",
+            backgroundColor: "#0e3c34",
             color: "#fff",
             border: "none",
             borderRadius: "20px",

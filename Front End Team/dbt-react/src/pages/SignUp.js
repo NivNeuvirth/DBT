@@ -80,10 +80,10 @@ const SignUp = () => {
   }
 
   const paperStyle = { padding: "30px 20px", width: 300, margin: "30px auto" };
-  const avatarStyle = { backgroundColor: "#006400", margin: "10px 0 20px 0" };
+  const avatarStyle = { backgroundColor: "#0e3c34", margin: "10px 0 20px 0" };
 
   return (
-    <Grid>
+    <Grid style={{ paddingTop: "80px" }}>
       <Paper elevation={20} style={paperStyle}>
         <Grid align="center">
           <Avatar style={avatarStyle}>
@@ -210,7 +210,7 @@ const SignUp = () => {
             control={
               <Checkbox
                 required
-                style={{ color: "#006400" }}
+                style={{ color: "#0e3c34" }}
                 name="accept"
                 type="checkbox"
                 checked={formData.accept}
@@ -231,7 +231,7 @@ const SignUp = () => {
             type="submit"
             fullWidth
             variant="contained"
-            style={{ backgroundColor: "#006400", margin: "8px 0" }}
+            style={{ backgroundColor: "#0e3c34", margin: "8px 0" }}
           >
             Sign Up
           </Button>

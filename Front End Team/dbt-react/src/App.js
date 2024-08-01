@@ -15,6 +15,7 @@ import AdminPanel from "./components/AdminPanel";
 import { useContext } from "react";
 import { UserContext } from "./context/UserContext";
 import { Navigate } from "react-router-dom";
+import LandingPage from "./pages/LandingPage";
 
 const appStyle = {
   // backgroundImage: `url(${backgroundImage})`,
@@ -39,6 +40,7 @@ function App() {
           <ChatBot />
           <div>
             <Routes>
+              <Route path="/" element={<LandingPage />} />
               <Route path="/Trips" element={<YourTrips />} />
               <Route path="/home" element={<Home />} />
               <Route path="/Tickets" element={<Tickets />} />

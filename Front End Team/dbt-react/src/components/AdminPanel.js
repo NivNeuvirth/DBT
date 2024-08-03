@@ -1,59 +1,29 @@
 import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context/UserContext";
-import {
-  styled,
-  createTheme,
-  ThemeProvider,
-  useTheme,
-} from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import MuiDrawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import BottomNavigation from "@mui/material/BottomNavigation";
+import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import HomeIcon from "@mui/icons-material/Home";
 import AttractionsIcon from "@mui/icons-material/Place";
 import PeopleIcon from "@mui/icons-material/People";
-import { ListItem, ListItemIcon, ListItemText } from "@mui/material";
 import UsersTable from "./UsersTable";
-import UserEditDialog from "./UserEditDialog"; // Import the UserEditDialog component
 
-const drawerWidth = 240;
-
-const Drawer = styled(MuiDrawer, {
-  shouldForwardProp: (prop) => prop !== "open",
-})(({ theme, open }) => ({
-  "& .MuiDrawer-paper": {
-    position: "relative",
-    whiteSpace: "nowrap",
-    width: drawerWidth,
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    boxSizing: "border-box",
-    ...(!open && {
-      overflowX: "hidden",
-      transition: theme.transitions.create("width", {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-      }),
-      width: theme.spacing(7),
-      [theme.breakpoints.up("sm")]: {
-        width: theme.spacing(9),
-      },
-    }),
-  },
-}));
-
-const defaultTheme = createTheme();
-
-const Home = () => <h1>Home</h1>;
+const Home = () => (
+  <Box
+    sx={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "100%",
+    }}
+  >
+    <Typography variant="h4" align="center">
+      Admin Panel
+    </Typography>
+  </Box>
+);
 
 const Attractions = ({ attractions, deleteAttraction }) => (
   <Box sx={{ mt: 5, mb: 5 }}>
@@ -75,15 +45,7 @@ const Users = ({ users, onEdit }) => (
 );
 
 export default function AdminPanel() {
-  const [open, setOpen] = React.useState(true);
   const [selectedComponent, setSelectedComponent] = useState("home");
-  const [editingUser, setEditingUser] = useState(null);
-  const theme = useTheme();
-
-  const toggleDrawer = () => {
-    setOpen(!open);
-  };
-
   const { user } = useContext(UserContext);
   const [attractions, setAttractions] = useState([]);
   const [users, setUsers] = useState([]);
@@ -135,11 +97,7 @@ export default function AdminPanel() {
     }
   };
 
-  const handleEditUser = (user) => {
-    setEditingUser(user);
-  };
-
-  const handleSaveUser = async (updatedUser) => {
+  const handleEditUser = async (updatedUser) => {
     try {
       const response = await fetch(
         `http://localhost:3005/api/users/${updatedUser.id}`,
@@ -154,13 +112,11 @@ export default function AdminPanel() {
       );
 
       if (response.ok) {
-        setUsers(
-          users.map((user) => (user.id === updatedUser.id ? updatedUser : user))
+        setUsers((prevUsers) =>
+          prevUsers.map((user) =>
+            user.id === updatedUser.id ? updatedUser : user
+          )
         );
-        setEditingUser(null);
-        alert("User updated successfully");
-      } else {
-        alert("Failed to update user");
       }
     } catch (error) {
       console.error("Error updating user:", error);
@@ -168,100 +124,80 @@ export default function AdminPanel() {
   };
 
   if (!user || user.role !== "admin") {
-    return <div>Access denied. Admins only.</div>;
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh", // Full viewport height to center vertically
+          padding: 4, // Add padding for spacing
+        }}
+      >
+        <Typography variant="h4" align="center" sx={{ fontSize: 24 }}>
+          Access denied. Admins only.
+        </Typography>
+      </Box>
+    );
   }
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Box sx={{ display: "flex" }}>
-        <CssBaseline />
-        <Drawer variant="permanent" open={open}>
-          <Toolbar
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              px: [1],
-              paddingTop: theme.spacing(13), // Add top padding here
-            }}
-          >
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={toggleDrawer}
-              edge="start"
-              sx={{
-                marginRight: "36px",
-              }}
-            >
-              {open ? <ChevronLeftIcon /> : <MenuIcon />}
-            </IconButton>
-            <Typography variant="h6" noWrap>
-              Admin Dashboard
-            </Typography>
-          </Toolbar>
-          <Divider />
-          <List component="nav">
-            <ListItem button onClick={() => setSelectedComponent("home")}>
-              <ListItemIcon>
-                <HomeIcon />
-              </ListItemIcon>
-              <ListItemText primary="Home" />
-            </ListItem>
-            <ListItem
-              button
-              onClick={() => setSelectedComponent("attractions")}
-            >
-              <ListItemIcon>
-                <AttractionsIcon />
-              </ListItemIcon>
-              <ListItemText primary="Attractions" />
-            </ListItem>
-            <ListItem button onClick={() => setSelectedComponent("users")}>
-              <ListItemIcon>
-                <PeopleIcon />
-              </ListItemIcon>
-              <ListItemText primary="Users" />
-            </ListItem>
-            <Divider sx={{ my: 1 }} />
-          </List>
-        </Drawer>
-        <Box
-          component="main"
-          sx={{
-            backgroundColor:
-              theme.palette.mode === "light"
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
-            flexGrow: 1,
-            height: "100vh",
-            overflow: "auto",
-            paddingTop: theme.spacing(13), // Add top padding here
-            paddingLeft: open ? drawerWidth : theme.spacing(9),
-            transition: theme.transitions.create("padding-left", {
-              easing: theme.transitions.easing.sharp,
-              duration: theme.transitions.duration.enteringScreen,
-            }),
-          }}
-        >
-          {selectedComponent === "home" && <Home />}
-          {selectedComponent === "attractions" && (
-            <Attractions
-              attractions={attractions}
-              deleteAttraction={deleteAttraction}
-            />
-          )}
-          {selectedComponent === "users" && (
-            <Users users={users} onEdit={handleEditUser} />
-          )}
-        </Box>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100vh",
+        overflow: "hidden",
+      }}
+    >
+      <CssBaseline />
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          overflow: "hidden", // Disable scrolling for the entire page
+          padding: 1,
+          paddingTop: 10, // Add top padding for navigation
+          paddingBottom: 1, // Add bottom padding for navigation
+        }}
+      >
+        {selectedComponent === "home" && <Home />}
+        {selectedComponent === "attractions" && (
+          <Attractions
+            attractions={attractions}
+            deleteAttraction={deleteAttraction}
+          />
+        )}
+        {selectedComponent === "users" && (
+          <Users users={users} onEdit={handleEditUser} />
+        )}
       </Box>
-      <UserEditDialog
-        open={Boolean(editingUser)}
-        onClose={() => setEditingUser(null)}
-        user={editingUser || {}}
-        onSave={handleSaveUser}
-      />
-    </ThemeProvider>
+      <BottomNavigation
+        value={selectedComponent}
+        onChange={(event, newValue) => {
+          setSelectedComponent(newValue);
+        }}
+        showLabels
+        sx={{
+          position: "sticky",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          borderTop: "1px solid #e0e0e0",
+        }}
+      >
+        <BottomNavigationAction label="Home" value="home" icon={<HomeIcon />} />
+        <BottomNavigationAction
+          label="Attractions"
+          value="attractions"
+          icon={<AttractionsIcon />}
+        />
+        <BottomNavigationAction
+          label="Users"
+          value="users"
+          icon={<PeopleIcon />}
+        />
+      </BottomNavigation>
+    </Box>
   );
 }

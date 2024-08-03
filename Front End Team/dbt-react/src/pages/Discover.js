@@ -3,6 +3,7 @@ import Grid from "@mui/material/Grid";
 import fetchAttractions from "../components/FetchAttractions";
 import CardAttraction from "../components/CardAttraction";
 import { UserContext } from "../context/UserContext";
+import { CssBaseline, Box } from "@mui/material";
 
 const Discover = () => {
   const [attractions, setAttractions] = useState([]);
@@ -43,12 +44,17 @@ const Discover = () => {
   };
 
   return (
-    <div
+    <Box
       style={{
         padding: "20px",
-        paddingTop: "80px",
+        paddingTop: "100px",
+        width: "100%",
+        backgroundImage: "linear-gradient(180deg, #FDE791, #FFF)",
+        backgroundSize: "100% 150px",
+        backgroundRepeat: "no-repeat",
       }}
     >
+      <CssBaseline />
       <Grid container spacing={4}>
         {attractions.map((attraction, index) => (
           <Grid item xs={12} sm={6} md={4} key={index}>
@@ -67,7 +73,7 @@ const Discover = () => {
           </Grid>
         ))}
       </Grid>
-    </div>
+    </Box>
   );
 };
 

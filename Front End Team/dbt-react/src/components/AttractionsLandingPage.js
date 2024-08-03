@@ -18,13 +18,15 @@ const AttractionsLandingPage = () => {
       const data = await fetchAttractions();
       setAttractions(data);
       setLoading(false);
-      checkArrows();
+      setTimeout(checkArrows, 100); // Check arrows after loading
     };
     getAttractions();
   }, []);
 
   useEffect(() => {
-    const handleResize = () => checkArrows();
+    const handleResize = () => {
+      checkArrows();
+    };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, [attractions]);
@@ -34,7 +36,6 @@ const AttractionsLandingPage = () => {
       const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
       setShowLeftArrow(scrollLeft > 0);
       setShowRightArrow(scrollLeft + clientWidth < scrollWidth);
-      console.log("checkArrows:", { scrollLeft, scrollWidth, clientWidth });
     }
   };
 
@@ -76,7 +77,7 @@ const AttractionsLandingPage = () => {
           attractions.filter((attraction) => attraction.id !== id)
         );
         alert("Attraction deleted successfully");
-        checkArrows();
+        setTimeout(checkArrows, 100); // Ensure arrows update after deletion
       } else {
         alert("Failed to delete attraction");
       }

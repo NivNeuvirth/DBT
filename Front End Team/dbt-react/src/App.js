@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import NavbarComp from "./components/NavbarComp";
 import YourTrips from "./pages/YourTrips";
-import Home from "./pages/Home";
 import Tickets from "./pages/Tickets";
 import Discover from "./pages/Discover";
 import SignUp from "./pages/SignUp";
@@ -23,7 +22,6 @@ function App() {
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/Trips" element={<YourTrips />} />
-            <Route path="/home" element={<Home />} />
             <Route path="/Tickets" element={<Tickets />} />
             <Route path="/Discover" element={<Discover />} />
             <Route path="/Success" element={<Success />} />

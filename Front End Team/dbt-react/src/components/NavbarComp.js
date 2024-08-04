@@ -14,14 +14,13 @@ import Fab from "@mui/material/Fab";
 import { UserContext } from "../context/UserContext";
 import useAuth from "../hooks/useAuth";
 import Divider from "@mui/material/Divider";
-import PropTypes from "prop-types";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 const pages = ["Discover", "Trips", "Tickets"];
 const loggedInSettings = ["Profile", "Settings", "Logout"];
 const loggedOutSettings = ["Login", "Sign Up"];
 
-const NavbarComp = ({ mode, toggleColorMode }) => {
+const NavbarComp = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);

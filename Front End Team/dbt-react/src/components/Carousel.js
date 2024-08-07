@@ -47,14 +47,8 @@ const Carousel = () => {
         backgroundSize: "cover",
         borderRadius: "10px",
         outline: "1px solid",
-        outlineColor:
-          theme.palette.mode === "light"
-            ? alpha("#BFCCD9", 0.5)
-            : alpha("#9CCCFC", 0.1),
-        boxShadow:
-          theme.palette.mode === "light"
-            ? `0 0 12px 8px ${alpha("#9CCCFC", 0.2)}`
-            : `0 0 24px 12px ${alpha("#033363", 0.2)}`,
+        outlineColor: alpha("#BFCCD9", 0.5),
+        boxShadow: `0 0 12px 8px ${alpha("#9CCCFC", 0.2)}`,
       })}
     >
       <Box
@@ -67,14 +61,14 @@ const Carousel = () => {
       />
       <Box
         position="absolute"
-        top="42%"
-        left="22%"
-        transform="translate(-50%, -50%)"
+        top="50%"
+        left="50%"
         color="white"
         bgcolor="rgba(0, 0, 0, 0.5)"
         p={2}
         borderRadius="5px"
         textAlign="center"
+        sx={{ transform: "translate(-50%, -50%)" }} // Add this line
       >
         <Typography variant="h4" component="div">
           Explore the Wonders of the World

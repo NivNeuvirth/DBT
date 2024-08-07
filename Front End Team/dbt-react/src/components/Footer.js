@@ -5,11 +5,7 @@ import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import InstagramIcon from "@mui/icons-material/Instagram";
-
-// const logoStyle = {
-//   width: "140px",
-//   height: "auto",
-// };
+import logo from "../images/Pure-logo-round.png";
 
 function Copyright() {
   return (
@@ -54,6 +50,9 @@ export default function Footer() {
           rel="noopener noreferrer"
         >
           <InstagramIcon />
+        </IconButton>
+        <IconButton>
+          <img src={logo} alt="DBT" style={{ width: 24, height: 24 }} />
         </IconButton>
       </Stack>
       <Typography variant="body2" color="text.secondary">

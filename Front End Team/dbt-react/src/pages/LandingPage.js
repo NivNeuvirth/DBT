@@ -14,8 +14,8 @@ export default function LandingPage() {
       <Hero />
       <Box sx={{ bgcolor: "background.default" }}>
         <Carousel />
-        <Map />
         <AttractionsLandingPage />
+        <Map />
         <Divider />
       </Box>
     </Box>

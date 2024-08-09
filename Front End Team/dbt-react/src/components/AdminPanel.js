@@ -29,9 +29,12 @@ const Attractions = ({ attractions, deleteAttraction }) => (
   <Box sx={{ mt: 5, mb: 5 }}>
     <ul>
       {attractions.map((attraction) => (
-        <li key={attraction.id}>
-          {attraction.title} - {attraction.subtitle}
-          <button onClick={() => deleteAttraction(attraction.id)}>
+        <li key={attraction.ID}>
+          {attraction.ID} - {attraction["Attraction Name"]}
+          <button
+            onClick={() => deleteAttraction(attraction.id)}
+            paddingLeft={2}
+          >
             Delete
           </button>
         </li>
@@ -155,7 +158,7 @@ export default function AdminPanel() {
         component="main"
         sx={{
           flexGrow: 1,
-          overflow: "hidden", // Disable scrolling for the entire page
+          overflow: "auto", // Disable scrolling for the entire page
           padding: 1,
           paddingTop: 10, // Add top padding for navigation
           paddingBottom: 1, // Add bottom padding for navigation

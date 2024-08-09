@@ -36,7 +36,8 @@ const Carousel = () => {
     <Box
       position="relative"
       width="100%"
-      height="100vh" // Increased height to show more of the picture
+      height="95vh" // Increased height to show more of the picture
+      objectFit="cover"
       maxHeight="700px" // Adjusted maximum height
       overflow="hidden"
       sx={(theme) => ({

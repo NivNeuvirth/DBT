@@ -16,6 +16,7 @@ import LockPersonOutlinedIcon from "@mui/icons-material/LockPersonOutlined";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import CssBaseline from "@mui/material/CssBaseline";
+import { useEffect } from "react";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -61,6 +62,11 @@ const Login = () => {
       setErrorMessage("An error occurred. Please try again later.");
     }
   };
+
+  useEffect(() => {
+    // Scroll to the top of the page when the component mounts
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <Box>

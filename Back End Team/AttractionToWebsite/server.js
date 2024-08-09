@@ -47,29 +47,23 @@ const isAdmin = (req, res, next) => {
   }
 };
 
-// // Example endpoint to fetch data with authentication
-// app.get("/api/data", authenticateToken, async (req, res) => {
-//   try {
-//     const query =
-//       "SELECT id, title, subtitle, address, cords FROM atlas_obscura_attractions";
-//     const data = (await db.query(query)).rows;
-
-//     if (data.length === 0) {
-//       res.status(404).json({ error: "No data found" });
-//     } else {
-//       res.json(data);
-//     }
-//   } catch (err) {
-//     console.error("Error executing query", err);
-//     res.status(500).json({ error: "Internal server error" });
-//   }
-// });
-
-// Example endpoint to fetch data (public)
 app.get("/api/data", async (req, res) => {
   try {
-    const query =
-      "SELECT id, title, subtitle, address, cords FROM atlas_obscura_attractions";
+    const query = `
+      SELECT 
+        "ID", 
+        "Attraction Category", 
+        "Attraction Name", 
+        "Attraction City", 
+        "Top Choice?", 
+        "Attraction Address", 
+        "Attraction Phone", 
+        "Attraction Site", 
+        "Attraction Description", 
+        "Image Link" 
+      FROM lonely_planet_attractions;
+    `;
+
     const data = (await db.query(query)).rows;
 
     if (data.length === 0) {
@@ -228,6 +222,85 @@ app.put("/api/users/:id", authenticateToken, isAdmin, async (req, res) => {
     }
   } catch (err) {
     console.error("Error executing query", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// Endpoint to get list of user favorites
+app.get("/api/favorites", authenticateToken, async (req, res) => {
+  const userId = req.user.id;
+  try {
+    const query = `
+      SELECT attraction_id FROM user_favorites WHERE user_id = $1
+    `;
+    const favorites = (await db.query(query, [userId])).rows.map(
+      (row) => row.attraction_id
+    );
+    res.json(favorites);
+  } catch (err) {
+    console.error("Error executing query", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// Endpoint to add or remove an attraction from a user's favorites
+// After updating favorites, ensure the backend returns an array
+app.post("/api/favorites", authenticateToken, async (req, res) => {
+  const userId = req.user.id;
+  const { attractionId } = req.body;
+
+  try {
+    const checkQuery = `
+      SELECT * FROM user_favorites WHERE user_id = $1 AND attraction_id = $2
+    `;
+    const result = await db.query(checkQuery, [userId, attractionId]);
+
+    if (result.rows.length > 0) {
+      // Remove from favorites if it already exists
+      const deleteQuery = `
+        DELETE FROM user_favorites WHERE user_id = $1 AND attraction_id = $2
+      `;
+      await db.query(deleteQuery, [userId, attractionId]);
+    } else {
+      // Add to favorites if it does not exist
+      const insertQuery = `
+        INSERT INTO user_favorites (user_id, attraction_id) VALUES ($1, $2)
+      `;
+      await db.query(insertQuery, [userId, attractionId]);
+    }
+
+    // Query for updated list of favorites
+    const updatedFavoritesQuery = `
+      SELECT attraction_id FROM user_favorites WHERE user_id = $1
+    `;
+    const updatedFavorites = (
+      await db.query(updatedFavoritesQuery, [userId])
+    ).rows.map((row) => row.attraction_id);
+
+    // Return the updated list of favorites
+    res.json(updatedFavorites);
+  } catch (err) {
+    console.error("Error executing query", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// New endpoint to fetch user's favorite attractions with full details
+app.get("/api/user-favorites", authenticateToken, async (req, res) => {
+  const userId = req.user.id;
+
+  try {
+    const query = `
+      SELECT la.*
+      FROM user_favorites uf
+      JOIN lonely_planet_attractions la ON uf.attraction_id = la."ID"
+      WHERE uf.user_id = $1
+    `;
+    const favorites = (await db.query(query, [userId])).rows;
+
+    res.json(favorites);
+  } catch (err) {
+    console.error("Error fetching user favorites", err);
     res.status(500).json({ error: "Internal server error" });
   }
 });

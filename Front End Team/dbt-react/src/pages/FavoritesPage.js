@@ -1,13 +1,19 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
-import { Box, Typography, CircularProgress, IconButton } from "@mui/material";
+import {
+  Box,
+  Typography,
+  CircularProgress,
+  IconButton,
+  CssBaseline,
+} from "@mui/material";
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
-import fetchAttractions from "./FetchAttractions";
-import CardLandingPage from "./CardLandingPage";
+import CardLandingPage from "../components/CardLandingPage";
 import { UserContext } from "../context/UserContext"; // Adjust the import path as necessary
-import AttractionDialog from "./AttractionDialog"; // Import the new dialog component
+import AttractionDialog from "../components/AttractionDialog"; // Import the dialog component
+import { useNavigate } from "react-router-dom";
 
-const AttractionsLandingPage = () => {
-  const [attractions, setAttractions] = useState([]);
+const FavoritesPage = () => {
+  const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedAttraction, setSelectedAttraction] = useState(null); // State for selected attraction
   const [dialogOpen, setDialogOpen] = useState(false); // State for dialog visibility
@@ -15,16 +21,15 @@ const AttractionsLandingPage = () => {
   const containerRef = useRef(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const getAttractions = async () => {
-      const data = await fetchAttractions();
-      setAttractions(data);
-      setLoading(false);
-      setTimeout(checkArrows, 100); // Check arrows after loading
-    };
-    getAttractions();
-  }, []);
+    if (user) {
+      fetchUserFavorites();
+    } else {
+      navigate("/Login");
+    }
+  }, [user, navigate]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -32,7 +37,29 @@ const AttractionsLandingPage = () => {
     };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, [attractions]);
+  }, [favorites]);
+
+  const fetchUserFavorites = async () => {
+    try {
+      const response = await fetch("http://localhost:3005/api/user-favorites", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch user favorites");
+      }
+
+      const data = await response.json();
+      setFavorites(data); // Set the favorites state with the fetched data
+      setLoading(false);
+      setTimeout(checkArrows, 100); // Check arrows after loading
+    } catch (error) {
+      console.error("Failed to fetch user favorites:", error);
+      setLoading(false);
+    }
+  };
 
   const checkArrows = () => {
     if (containerRef.current) {
@@ -62,33 +89,6 @@ const AttractionsLandingPage = () => {
     }
   };
 
-  const handleDelete = async (id) => {
-    try {
-      const response = await fetch(
-        `http://localhost:3005/api/attractions/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
-      );
-
-      if (response.ok) {
-        setAttractions(
-          attractions.filter((attraction) => attraction.id !== id)
-        );
-        alert("Attraction deleted successfully");
-        setTimeout(checkArrows, 100); // Ensure arrows update after deletion
-      } else {
-        alert("Failed to delete attraction");
-      }
-    } catch (error) {
-      console.error("Error deleting attraction:", error);
-    }
-  };
-
   const handleCardClick = (attraction) => {
     setSelectedAttraction(attraction);
     setDialogOpen(true);
@@ -100,15 +100,31 @@ const AttractionsLandingPage = () => {
   };
 
   return (
-    <Box sx={{ mt: 5, mb: 5, position: "relative", paddingTop: "20px" }}>
+    <Box
+      style={{
+        padding: "20px",
+        paddingTop: "100px",
+        width: "100%",
+        backgroundImage: "linear-gradient(180deg, #FDE791, #FFF)",
+        backgroundSize: "100% 150px",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      <CssBaseline />
       <Typography
-        variant="h3"
-        component="h2"
-        align="center"
+        variant="h4"
         gutterBottom
-        color={"#0e3c34"}
+        sx={{
+          fontWeight: "bold",
+          color: "#0e3c34",
+          textTransform: "uppercase",
+          letterSpacing: "2px",
+          marginBottom: "20px",
+          textAlign: "center",
+          paddingTop: "20px",
+        }}
       >
-        Explore Top Attractions
+        Your Favorite Attractions
       </Typography>
       {loading ? (
         <Box
@@ -152,33 +168,29 @@ const AttractionsLandingPage = () => {
             }}
             onScroll={checkArrows}
           >
-            {attractions
-              .filter((attraction) => attraction["Top Choice?"] === 1) // Filter for top choice attractions
-              .map((attraction) => (
-                <Box
-                  key={attraction.ID}
-                  onClick={() => handleCardClick(attraction)}
-                >
-                  <CardLandingPage
-                    attraction={{
-                      "Attraction Name":
-                        attraction["Attraction Name"] || "Unknown",
-                      "Attraction City":
-                        attraction["Attraction City"] || "Unknown location",
-                      "Image Link":
-                        attraction["Image Link"] ||
-                        require("../images/Pure_logo_yellow_upscaled.png"),
-                      ID: attraction.ID, // Ensure the id is passed for deletion
-                      Description:
-                        attraction.Description || "No description available.",
-                      Website: attraction.Website || "No website available.",
-                      Address: attraction.Address || "No address available.",
-                    }}
-                    isAdmin={user && user.role === "admin"}
-                    onDelete={handleDelete}
-                  />
-                </Box>
-              ))}
+            {favorites.map((attraction) => (
+              <Box
+                key={attraction.ID}
+                onClick={() => handleCardClick(attraction)}
+              >
+                <CardLandingPage
+                  attraction={{
+                    "Attraction Name":
+                      attraction["Attraction Name"] || "Unknown",
+                    "Attraction City":
+                      attraction["Attraction City"] || "Unknown location",
+                    "Image Link":
+                      attraction["Image Link"] ||
+                      require("../images/Pure_logo_yellow_upscaled.png"),
+                    ID: attraction.ID, // Ensure the id is passed for deletion
+                    Description:
+                      attraction.Description || "No description available.",
+                    Website: attraction.Website || "No website available.",
+                    Address: attraction.Address || "No address available.",
+                  }}
+                />
+              </Box>
+            ))}
           </Box>
           {showRightArrow && (
             <IconButton
@@ -205,4 +217,4 @@ const AttractionsLandingPage = () => {
   );
 };
 
-export default AttractionsLandingPage;
+export default FavoritesPage;

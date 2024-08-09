@@ -17,7 +17,7 @@ import Divider from "@mui/material/Divider";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 const pages = ["Discover", "Trips", "Tickets"];
-const loggedInSettings = ["Profile", "Settings", "Logout"];
+const loggedInSettings = ["Favorites", "Logout"];
 const loggedOutSettings = ["Login", "Sign Up"];
 
 const NavbarComp = () => {
@@ -223,7 +223,7 @@ const NavbarComp = () => {
                       backgroundColor: "#0e3c34",
                       color: "#FFFFFF",
                       "&:hover": {
-                        backgroundColor: "#004d00",
+                        backgroundColor: "#0e3c34",
                       },
                     }}
                     variant="contained"

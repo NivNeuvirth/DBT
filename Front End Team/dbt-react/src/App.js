@@ -13,6 +13,7 @@ import AdminPanel from "./components/AdminPanel";
 import LandingPage from "./pages/LandingPage";
 import FavoritesPage from "./pages/FavoritesPage";
 import SearchResults from "./pages/SearchResults";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
             <Route path="/Favorites" element={<FavoritesPage />} />
             <Route path="/search" element={<SearchResults />} />
             <Route path="/admin" element={<AdminPanel />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
         <Footer />

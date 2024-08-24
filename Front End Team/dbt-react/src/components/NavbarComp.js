@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -15,6 +15,8 @@ import { UserContext } from "../context/UserContext";
 import useAuth from "../hooks/useAuth";
 import Divider from "@mui/material/Divider";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { TextField, IconButton } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
 
 const pages = ["Discover", "Trips", "Tickets"];
 const loggedInSettings = ["Favorites", "Logout"];
@@ -30,6 +32,20 @@ const NavbarComp = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
   let lastScrollTop = 0;
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showSearch, setShowSearch] = useState(false);
+
+  const handleSearch = () => {
+    // Perform search or navigate to a search results page
+    if (searchQuery.trim()) {
+      navigate(`/search?query=${searchQuery}`);
+    }
+  };
+
+  const toggleSearch = () => {
+    setShowSearch(!showSearch);
+  };
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -160,6 +176,51 @@ const NavbarComp = () => {
                   </MenuItem>
                 ))}
               </Box>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                borderRadius: "20px",
+                bgcolor: showSearch ? "white" : "transparent",
+                boxShadow: showSearch ? "0 0 10px rgba(0,0,0,0.2)" : "none",
+                transition: "all 0.3s ease",
+                width: showSearch ? "200px" : "40px",
+                overflow: "hidden",
+                mr: 2,
+              }}
+            >
+              <IconButton onClick={toggleSearch} sx={{ p: 1 }}>
+                <SearchIcon />
+              </IconButton>
+              {showSearch && (
+                <TextField
+                  variant="outlined"
+                  placeholder="Search..."
+                  size="small"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter") {
+                      handleSearch();
+                    }
+                  }}
+                  sx={{
+                    flexGrow: 1,
+                    borderRadius: "20px",
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        border: "none",
+                      },
+                    },
+                  }}
+                  InputProps={{
+                    style: {
+                      borderRadius: "20px",
+                    },
+                  }}
+                />
+              )}
             </Box>
             <Box
               sx={{

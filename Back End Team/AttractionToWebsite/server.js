@@ -305,6 +305,26 @@ app.get("/api/user-favorites", authenticateToken, async (req, res) => {
   }
 });
 
+app.get("/api/search", async (req, res) => {
+  const { query } = req.query;
+
+  try {
+    const searchQuery = `%${query}%`.toLowerCase(); // For case-insensitive search
+    const dbQuery = `
+      SELECT * 
+      FROM lonely_planet_attractions 
+      WHERE LOWER("Attraction Name") LIKE $1
+         OR LOWER("Attraction City") LIKE $1;
+    `;
+
+    const results = await db.query(dbQuery, [searchQuery]);
+    res.json(results.rows);
+  } catch (err) {
+    console.error("Error executing search query", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });

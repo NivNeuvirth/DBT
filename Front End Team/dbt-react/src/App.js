@@ -12,6 +12,7 @@ import { UserProvider } from "./context/UserContext";
 import AdminPanel from "./components/AdminPanel";
 import LandingPage from "./pages/LandingPage";
 import FavoritesPage from "./pages/FavoritesPage";
+import SearchResults from "./pages/SearchResults";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             <Route path="/Login" element={<Login />} />
             <Route path="/Sign Up" element={<SignUp />} />
             <Route path="/Favorites" element={<FavoritesPage />} />
+            <Route path="/search" element={<SearchResults />} />
             <Route path="/admin" element={<AdminPanel />} />
           </Routes>
         </div>

@@ -64,13 +64,13 @@ const Map = () => {
       })}
     >
       <Typography
-        variant="h5" // Changed from h4 to h6 for smaller text
+        variant="h5"
         sx={{
           color: "white",
-          backgroundColor: alpha("#000", 0.5),
+          backgroundColor: alpha("#000", 0.5), // Semi-transparent black background
           padding: "6px 15px",
           borderRadius: "8px",
-          boxShadow: `0 4px 10px ${alpha("#000", 0.3)}`,
+          boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
           fontWeight: "bold",
           textAlign: "center",
           position: "absolute",
@@ -78,10 +78,16 @@ const Map = () => {
           left: "50%",
           transform: "translateX(-50%)",
           whiteSpace: "nowrap",
+          width: { xs: "90%", sm: "70%", md: "60%", lg: "50%" }, // Responsive width
+          maxWidth: "100%", // Ensure it doesn’t overflow its container
+          boxSizing: "border-box", // Ensures padding is included in width calculations
+          overflow: "hidden",
+          textOverflow: "ellipsis", // Handles text overflow gracefully
         }}
       >
-        Where to NEXT? Explore the world with our interactive map
+        Where to NEXT? Explore our interactive map
       </Typography>
+
       {countries.length > 0 ? (
         <ComposableMap
           projectionConfig={{

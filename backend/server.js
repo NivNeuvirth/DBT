@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const db = require("./db");
 
 const app = express();
-const port = 3005;
+const port = process.env.PORT || 3005;
 
 const SECRET_KEY = "your_secret_key";
 const REFRESH_SECRET_KEY = "your_refresh_secret_key";

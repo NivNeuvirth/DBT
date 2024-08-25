@@ -176,7 +176,7 @@ app.delete(
     const { id } = req.params;
 
     try {
-      const deleteQuery = "DELETE FROM atlas_obscura_attractions WHERE id = $1";
+      const deleteQuery = "DELETE FROM lonely_planet_attractions WHERE id = $1";
       await db.query(deleteQuery, [id]);
       res.status(200).json({ message: "Attraction deleted successfully" });
     } catch (err) {

@@ -32,7 +32,7 @@ const Attractions = ({ attractions, deleteAttraction }) => (
         <li key={attraction.ID}>
           {attraction.ID} - {attraction["Attraction Name"]}
           <button
-            onClick={() => deleteAttraction(attraction.id)}
+            onClick={() => deleteAttraction(attraction.ID)}
             paddingLeft={2}
           >
             Delete
@@ -89,7 +89,7 @@ export default function AdminPanel() {
 
       if (response.ok) {
         setAttractions(
-          attractions.filter((attraction) => attraction.id !== id)
+          attractions.filter((attraction) => attraction.ID !== id)
         );
         alert("Attraction deleted successfully");
       } else {

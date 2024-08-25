@@ -169,15 +169,15 @@ app.get("/api/protected", authenticateToken, (req, res) => {
 
 // Admin Protected Route to delete an attraction
 app.delete(
-  "/api/attractions/:id",
+  "/api/attractions/:ID",
   authenticateToken,
   isAdmin,
   async (req, res) => {
-    const { id } = req.params;
+    const { ID } = req.params;
 
     try {
       const deleteQuery = "DELETE FROM lonely_planet_attractions WHERE ID = $1";
-      await db.query(deleteQuery, [id]);
+      await db.query(deleteQuery, [ID]);
       res.status(200).json({ message: "Attraction deleted successfully" });
     } catch (err) {
       console.error("Error executing query", err);

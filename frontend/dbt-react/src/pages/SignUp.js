@@ -54,7 +54,7 @@ const SignUp = () => {
       await userSchema.validate(formData, { abortEarly: false });
       console.log("Form Submitted", formData);
       // API call to database
-      const response = await fetch("http://localhost:3005/api/users", {
+      const response = await fetch("https://dbt-8bqc.onrender.com/api/users", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -24,11 +24,14 @@ const CardLandingPage = ({ attraction, isAdmin, onDelete }) => {
 
   const fetchFavorites = async () => {
     try {
-      const response = await fetch("http://localhost:3005/api/favorites", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      });
+      const response = await fetch(
+        "https://dbt-8bqc.onrender.com/api/favorites",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to fetch favorites");
@@ -56,14 +59,17 @@ const CardLandingPage = ({ attraction, isAdmin, onDelete }) => {
         // Log the attraction ID to ensure it is defined
         console.log("Toggling favorite for attraction ID:", attraction.ID);
 
-        const response = await fetch("http://localhost:3005/api/favorites", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-          body: JSON.stringify({ attractionId: attraction.ID }),
-        });
+        const response = await fetch(
+          "https://dbt-8bqc.onrender.com/api/favorites",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+            body: JSON.stringify({ attractionId: attraction.ID }),
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Failed to update favorites");

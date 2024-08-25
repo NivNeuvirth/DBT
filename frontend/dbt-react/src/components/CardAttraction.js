@@ -60,11 +60,14 @@ const CardAttraction = ({ attraction, isAdmin, onDelete }) => {
 
   const fetchFavorites = async () => {
     try {
-      const response = await fetch("http://localhost:3005/api/favorites", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      });
+      const response = await fetch(
+        "https://dbt-8bqc.onrender.com/api/favorites",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
       const favorites = await response.json();
 
       // Convert the favorites array to a Set for efficient lookup
@@ -83,14 +86,17 @@ const CardAttraction = ({ attraction, isAdmin, onDelete }) => {
       navigate("/Login"); // Redirect to signup page if user is not signed in
     } else {
       try {
-        const response = await fetch("http://localhost:3005/api/favorites", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-          body: JSON.stringify({ attractionId: attraction.ID }),
-        });
+        const response = await fetch(
+          "https://dbt-8bqc.onrender.com/api/favorites",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+            body: JSON.stringify({ attractionId: attraction.ID }),
+          }
+        );
 
         const favorites = await response.json();
 

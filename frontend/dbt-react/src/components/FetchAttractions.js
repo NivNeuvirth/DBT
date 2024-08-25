@@ -1,6 +1,6 @@
 const fetchAttractions = async () => {
   try {
-    const response = await fetch("http://localhost:3005/api/data");
+    const response = await fetch("https://dbt-8bqc.onrender.com/api/data");
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }

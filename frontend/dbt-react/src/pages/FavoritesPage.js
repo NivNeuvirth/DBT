@@ -41,11 +41,14 @@ const FavoritesPage = () => {
 
   const fetchUserFavorites = async () => {
     try {
-      const response = await fetch("http://localhost:3005/api/user-favorites", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      });
+      const response = await fetch(
+        "https://dbt-8bqc.onrender.com/api/user-favorites",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to fetch user favorites");

@@ -21,7 +21,7 @@ const Discover = () => {
   const handleDelete = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:3005/api/attractions/${id}`,
+        `https://dbt-8bqc.onrender.com/api/attractions/${id}`,
         {
           method: "DELETE",
           headers: {

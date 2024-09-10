@@ -54,7 +54,7 @@ export default function AdminPanel() {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    fetch("https://dbt-8bqc.onrender.com/api/data", {
+    fetch(`${process.env.REACT_APP_API_URL}/api/data`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
@@ -65,7 +65,7 @@ export default function AdminPanel() {
   }, []);
 
   useEffect(() => {
-    fetch("https://dbt-8bqc.onrender.com/api/users", {
+    fetch(`${process.env.REACT_APP_API_URL}/api/users`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
@@ -78,7 +78,7 @@ export default function AdminPanel() {
   const deleteAttraction = async (id) => {
     try {
       const response = await fetch(
-        `https://dbt-8bqc.onrender.com/api/attractions/${id}`,
+        `${process.env.REACT_APP_API_URL}/api/attractions/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -103,7 +103,7 @@ export default function AdminPanel() {
   const handleEditUser = async (updatedUser) => {
     try {
       const response = await fetch(
-        `https://dbt-8bqc.onrender.com/api/users/${updatedUser.id}`,
+        `${process.env.REACT_APP_API_URL}/api/users/${updatedUser.id}`,
         {
           method: "PUT",
           headers: {

@@ -61,7 +61,7 @@ const CardAttraction = ({ attraction, isAdmin, onDelete }) => {
   const fetchFavorites = async () => {
     try {
       const response = await fetch(
-        "https://dbt-8bqc.onrender.com/api/favorites",
+        `${process.env.REACT_APP_API_URL}/api/favorites`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -87,7 +87,7 @@ const CardAttraction = ({ attraction, isAdmin, onDelete }) => {
     } else {
       try {
         const response = await fetch(
-          "https://dbt-8bqc.onrender.com/api/favorites",
+          `${process.env.REACT_APP_API_URL}/api/favorites`,
           {
             method: "POST",
             headers: {

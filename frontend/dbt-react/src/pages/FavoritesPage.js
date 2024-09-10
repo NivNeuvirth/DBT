@@ -42,7 +42,7 @@ const FavoritesPage = () => {
   const fetchUserFavorites = async () => {
     try {
       const response = await fetch(
-        "https://dbt-8bqc.onrender.com/api/user-favorites",
+        `${process.env.REACT_APP_API_URL}/api/user-favorites`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,

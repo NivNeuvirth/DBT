@@ -65,7 +65,7 @@ const AttractionsLandingPage = () => {
   const handleDelete = async (id) => {
     try {
       const response = await fetch(
-        `https://dbt-8bqc.onrender.com/api/attractions/${id}`,
+        `${process.env.REACT_APP_API_URL}/api/attractions/${id}`,
         {
           method: "DELETE",
           headers: {

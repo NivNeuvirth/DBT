@@ -14,7 +14,7 @@ const SearchResults = () => {
     const fetchSearchResults = async () => {
       try {
         const response = await fetch(
-          `https://dbt-8bqc.onrender.com/api/search?query=${query}`
+          `${process.env.REACT_APP_API_URL}/api/search?query=${query}`
         );
 
         if (!response.ok) {

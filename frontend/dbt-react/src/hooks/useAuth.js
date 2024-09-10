@@ -9,7 +9,7 @@ const useAuth = () => {
     const refreshToken = localStorage.getItem("refreshToken");
 
     if (storedUser && refreshToken) {
-      fetch("https://dbt-8bqc.onrender.com/api/refresh-token", {
+      fetch(`${process.env.REACT_APP_API_URL}/api/refresh-token`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

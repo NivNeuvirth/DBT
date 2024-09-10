@@ -9,6 +9,10 @@ import HomeIcon from "@mui/icons-material/Home";
 import AttractionsIcon from "@mui/icons-material/Place";
 import PeopleIcon from "@mui/icons-material/People";
 import UsersTable from "./UsersTable";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import Button from "@mui/material/Button";
 
 const Home = () => (
   <Box
@@ -27,19 +31,25 @@ const Home = () => (
 
 const Attractions = ({ attractions, deleteAttraction }) => (
   <Box sx={{ mt: 5, mb: 5 }}>
-    <ul>
+    <List>
       {attractions.map((attraction) => (
-        <li key={attraction.ID}>
-          {attraction.ID} - {attraction["Attraction Name"]}
-          <button
+        <ListItem
+          key={attraction.ID}
+          sx={{ display: "flex", justifyContent: "space-between" }}
+        >
+          <ListItemText
+            primary={`${attraction.ID} - ${attraction["Attraction Name"]}`}
+          />
+          <Button
+            variant="contained"
+            style={{ backgroundColor: "#0e3c34", margin: "8px 0" }}
             onClick={() => deleteAttraction(attraction.ID)}
-            paddingLeft={2}
           >
             Delete
-          </button>
-        </li>
+          </Button>
+        </ListItem>
       ))}
-    </ul>
+    </List>
   </Box>
 );
 
@@ -76,9 +86,10 @@ export default function AdminPanel() {
   }, []);
 
   const deleteAttraction = async (id) => {
+    const attractionId = parseInt(id, 10);
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/attractions/${id}`,
+        `${process.env.REACT_APP_API_URL}/api/attractions/${attractionId}`,
         {
           method: "DELETE",
           headers: {
@@ -89,7 +100,7 @@ export default function AdminPanel() {
 
       if (response.ok) {
         setAttractions(
-          attractions.filter((attraction) => attraction.ID !== id)
+          attractions.filter((attraction) => attraction.ID !== attractionId)
         );
         alert("Attraction deleted successfully");
       } else {
@@ -146,6 +157,14 @@ export default function AdminPanel() {
 
   return (
     <Box
+      style={{
+        padding: "20px",
+        paddingTop: "50px",
+        width: "100%",
+        backgroundImage: "linear-gradient(180deg, #FDE791, #FFF)",
+        backgroundSize: "100% 150px",
+        backgroundRepeat: "no-repeat",
+      }}
       sx={{
         display: "flex",
         flexDirection: "column",

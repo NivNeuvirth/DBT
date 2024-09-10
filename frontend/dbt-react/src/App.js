@@ -32,7 +32,7 @@ function App() {
             <Route path="/Sign Up" element={<SignUp />} />
             <Route path="/Favorites" element={<FavoritesPage />} />
             <Route path="/search" element={<SearchResults />} />
-            <Route path="/admin" element={<AdminPanel />} />
+            <Route path="/Admin Panel" element={<AdminPanel />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>

@@ -18,7 +18,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { TextField, IconButton } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
-const pages = ["Discover", "Trips", "Tickets"];
+const pages = ["Discover"];
 const loggedInSettings = ["Favorites", "Logout"];
 const loggedOutSettings = ["Login", "Sign Up"];
 
@@ -32,6 +32,10 @@ const NavbarComp = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
   let lastScrollTop = 0;
+
+  if (user && user.role === "admin" && !pages.includes("Admin Panel")) {
+    pages.push("Admin Panel");
+  }
 
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearch, setShowSearch] = useState(false);
